@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOOMFORGE — An Epic Open Source Event | 180DC VIT Chennai</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body data-theme="paper" data-urgency="normal">
+  <canvas id="orbital-canvas" aria-hidden="true"></canvas>
+  <div class="grain-layer" aria-hidden="true"></div>
+
+  <header class="partner-bar">
+    <div class="partner-strip">
+      <div class="partner-slot partner-vit">
+        <img src="logo-vit.png" alt="VIT Chennai" class="partner-logo logo-vit" />
+        <span class="vit-sub">OFFICE OF STUDENTS' WELFARE</span>
+      </div>
+      <span class="pipe"></span>
+      <a href="https://unstop.com/competitions/1793341/register" target="_blank" rel="noopener noreferrer" class="partner-slot partner-link" title="Register on Unstop">
+        <img src="logo-unstop.png" alt="Unstop" class="partner-logo logo-unstop" />
+      </a>
+      <span class="pipe"></span>
+      <div class="partner-slot">
+        <img src="logo-elevenlabs.png" alt="ElevenLabs" class="partner-logo logo-elevenlabs logo-mono" />
+      </div>
+      <span class="pipe"></span>
+      <div class="partner-slot">
+        <img src="logo-osen.png" alt="OSEN" class="partner-logo logo-osen" />
+      </div>
+      <span class="pipe"></span>
+      <div class="partner-slot">
+        <img src="logo-adaption.png" alt="Adaption" class="partner-logo logo-adaption logo-mono" />
+      </div>
+      <span class="pipe"></span>
+      <div class="partner-slot">
+        <span class="partner-badge">ZYORA LABS</span>
+      </div>
+      <span class="pipe"></span>
+      <a href="https://doomforge.180dcvitc.org/" target="_blank" rel="noopener noreferrer" class="partner-slot partner-link" title="180 Degrees Consulting VIT Chennai">
+        <img src="logo-180dc-light.png" alt="180 Degrees Consulting VITC" class="partner-logo logo-180dc logo-180dc-light" />
+        <img src="logo-180dc-dark.png" alt="180 Degrees Consulting VITC" class="partner-logo logo-180dc logo-180dc-dark" />
+      </a>
+    </div>
+
+    <div class="utility-actions">
+      <button type="button" id="theme-btn" class="tool-btn" title="Switch Paper / Dark Mode (T)" aria-label="Switch Theme">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"></circle>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+        </svg>
+      </button>
+      <button type="button" id="projector-btn" class="tool-btn" title="Projector Mode (H)" aria-label="Toggle Projector Mode">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="14" rx="1"></rect>
+          <path d="M8 21h8M12 18v3"></path>
+        </svg>
+      </button>
+      <button type="button" id="fullscreen-btn" class="tool-btn" title="Fullscreen (F)" aria-label="Toggle Fullscreen">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"></path>
+        </svg>
+      </button>
+      <button type="button" id="config-btn" class="tool-btn" title="Event Settings" aria-label="Open Settings">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="4" y1="7" x2="20" y2="7"></line>
+          <line x1="4" y1="17" x2="20" y2="17"></line>
+          <circle cx="9" cy="7" r="2.2"></circle>
+          <circle cx="15" cy="17" r="2.2"></circle>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="sheet">
+    <section class="masthead">
+      <div class="masthead-marks" aria-hidden="true">
+        <span class="mark-bar"></span>
+        <span class="mark-dot"></span>
+        <span class="mark-line"></span>
+        <svg class="star-reticle" viewBox="0 0 36 36" width="32" height="32">
+          <path d="M18 0 L19.5 16.5 L36 18 L19.5 19.5 L18 36 L16.5 19.5 L0 18 L16.5 16.5 Z" fill="currentColor" />
+        </svg>
+      </div>
+
+      <div class="title-lockup">
+        <span class="fracture-beam" aria-hidden="true"></span>
+        <h1 class="poster-title" aria-label="DOOMFORGE">
+          <span>D</span><span>O</span><span>O</span><span>M</span><span class="split-accent">F</span><span>O</span><span>R</span><span>G</span><span>E</span>
+        </h1>
+      </div>
+
+      <div class="subtitle-row">
+        <span class="sub-rule"></span>
+        <p class="poster-subtitle">AN EPIC OPEN SOURCE EVENT</p>
+        <span class="sub-rule"></span>
+      </div>
+    </section>
+
+    <section class="stage-grid">
+      <aside class="editorial-col">
+        <div class="manifesto-block">
+          <div class="manifesto-rule"></div>
+          <ul class="manifesto-list">
+            <li>CODE</li>
+            <li>COLLABORATE</li>
+            <li>BUILD</li>
+            <li>DEFEND</li>
+            <li>A MORE OPEN</li>
+            <li>TOMORROW</li>
+          </ul>
+        </div>
+
+        <div class="dash-accent"></div>
+
+        <div class="event-facts">
+          <div class="fact-row">
+            <span class="fact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="1"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+            </span>
+            <div>
+              <div class="fact-primary">8TH DECEMBER 2026</div>
+              <div class="fact-secondary">DOORS OPEN 09:00 IST</div>
+            </div>
+          </div>
+
+          <div class="fact-row">
+            <span class="fact-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 21s-6-5.686-6-10a6 6 0 1 1 12 0c0 4.314-6 10-6 10z"></path>
+                <circle cx="12" cy="11" r="2.2"></circle>
+              </svg>
+            </span>
+            <div>
+              <div class="fact-primary">NETAJI AUDITORIUM</div>
+              <div class="fact-secondary">VIT CHENNAI</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-accent"></div>
+
+        <p class="statement-copy">
+          CODE TOGETHER.<br />
+          SOLVE REAL PROBLEMS.<br />
+          CREATE LASTING IMPACT.
+        </p>
+
+        <div class="cta-stack">
+          <a href="https://unstop.com/competitions/1793341/register" target="_blank" rel="noopener noreferrer" class="btn btn-ink">
+            REGISTER ON UNSTOP
+            <span class="arrow">&#8599;</span>
+          </a>
+          <a href="https://doomforge.180dcvitc.org/" target="_blank" rel="noopener noreferrer" class="btn btn-outline">
+            DOOMFORGE.180DCVITC.ORG
+          </a>
+        </div>
+      </aside>
+
+      <div class="clock-col">
+        <div class="clock-toolbar">
+          <div class="mode-switch" role="tablist">
+            <button type="button" class="mode-btn active" data-mode="countdown" role="tab" aria-selected="true">
+              DOOMSDAY COUNTDOWN
+            </button>
+            <button type="button" class="mode-btn" data-mode="stage" role="tab" aria-selected="false">
+              STAGE TIMER
+            </button>
+          </div>
+
+          <div class="telemetry-pill">
+            <span class="pulse-led"></span>
+            <span id="status-text">ARMED</span>
+          </div>
+        </div>
+
+        <div class="clock-chassis">
+          <div class="chassis-corner tl"></div>
+          <div class="chassis-corner tr"></div>
+          <div class="chassis-corner bl"></div>
+          <div class="chassis-corner br"></div>
+
+          <div class="phase-header">
+            <span class="phase-tag">ACTIVE PROTOCOL //</span>
+            <span id="phase-label" class="phase-editable" contenteditable="true" spellcheck="false" title="Click to rename active phase">
+              T-MINUS TO DOOMFORGE KICKOFF
+            </span>
+          </div>
+
+          <div id="flip-board" class="flip-board">
+            <div class="flip-group" id="group-days">
+              <div class="digit-pair" id="digits-days"></div>
+              <div class="group-caption">DAYS</div>
+            </div>
+
+            <div class="colon-block" id="colon-days" aria-hidden="true">
+              <span></span><span></span>
+            </div>
+
+            <div class="flip-group">
+              <div class="digit-pair" id="digits-hours"></div>
+              <div class="group-caption">HOURS</div>
+            </div>
+
+            <div class="colon-block" aria-hidden="true">
+              <span></span><span></span>
+            </div>
+
+            <div class="flip-group">
+              <div class="digit-pair" id="digits-minutes"></div>
+              <div class="group-caption">MINUTES</div>
+            </div>
+
+            <div class="colon-block" aria-hidden="true">
+              <span></span><span></span>
+            </div>
+
+            <div class="flip-group">
+              <div class="digit-pair" id="digits-seconds"></div>
+              <div class="group-caption">SECONDS</div>
+            </div>
+          </div>
+
+          <div class="ruler-wrap">
+            <div class="ruler-track">
+              <div id="ruler-fill" class="ruler-fill"></div>
+              <div class="ruler-ticks" aria-hidden="true"></div>
+            </div>
+            <div class="ruler-meta">
+              <span id="target-meta">TARGET: 08 DEC 2026, 09:00 IST</span>
+              <span id="percent-meta">100.0% REMAINING</span>
+            </div>
+          </div>
+
+          <div id="stage-deck" class="stage-deck hidden">
+            <div class="deck-controls">
+              <button type="button" id="start-pause-btn" class="btn btn-emerald">START</button>
+              <button type="button" id="reset-btn" class="btn btn-outline">RESET</button>
+              <button type="button" id="plus-1m-btn" class="btn btn-outline">+1M</button>
+              <button type="button" id="plus-5m-btn" class="btn btn-outline">+5M</button>
+            </div>
+            <div class="preset-strip">
+              <button type="button" class="preset-btn" data-seconds="180" data-label="LIGHTNING DEMO — 3 MIN">3m Demo</button>
+              <button type="button" class="preset-btn" data-seconds="300" data-label="MAINTAINER Q&A — 5 MIN">5m Q&amp;A</button>
+              <button type="button" class="preset-btn" data-seconds="1800" data-label="ISSUE TRIAGE SPRINT — 30 MIN">30m Sprint</button>
+              <button type="button" class="preset-btn" data-seconds="7200" data-label="OPEN SOURCE FORGE — 2 HRS">2h Forge</button>
+              <button type="button" class="preset-btn" data-seconds="21600" data-label="MAIN HACKATHON BLOCK — 6 HRS">6h Build</button>
+            </div>
+          </div>
+        </div>
+
+        <section class="phases-section">
+          <div class="phases-head">
+            <h2>EVENT SCHEDULE PROTOCOLS</h2>
+            <span>SELECT A BLOCK TO LOAD CLOCK</span>
+          </div>
+          <div class="phases-grid">
+            <button type="button" class="phase-card active" data-type="countdown" data-label="T-MINUS TO DOOMFORGE KICKOFF">
+              <div class="phase-num">01</div>
+              <div class="phase-name">Kickoff Countdown</div>
+              <div class="phase-note">Dec 8, 2026 · Netaji Auditorium opening</div>
+            </button>
+            <button type="button" class="phase-card" data-type="stage" data-seconds="2700" data-label="PHASE 02: REPO BRIEFING & ISSUE TRIAGE">
+              <div class="phase-num">02</div>
+              <div class="phase-name">Issue Triage</div>
+              <div class="phase-note">45m codebase onboarding &amp; architecture</div>
+            </button>
+            <button type="button" class="phase-card" data-type="stage" data-seconds="10800" data-label="PHASE 03: OPEN SOURCE FORGE SPRINT">
+              <div class="phase-num">03</div>
+              <div class="phase-name">Forge Sprint</div>
+              <div class="phase-note">3h collaborative PR build &amp; review</div>
+            </button>
+            <button type="button" class="phase-card" data-type="stage" data-seconds="420" data-label="PHASE 04: AUDITORIUM DEMO & JURY">
+              <div class="phase-num">04</div>
+              <div class="phase-name">Stage Demo</div>
+              <div class="phase-note">7m live walkthrough + maintainer Q&amp;A</div>
+            </button>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="coordinator-footer">
+    <div class="coord-grid">
+      <div class="coord-cell">
+        <span class="coord-role">FACULTY COORDINATOR</span>
+        <span class="coord-name">BALAJI J</span>
+        <a href="tel:+917708581167" class="coord-phone">+91 77085 81167</a>
+      </div>
+      <div class="coord-cell">
+        <span class="coord-role">STUDENT COORDINATOR</span>
+        <span class="coord-name">NIVEDITHA VENKATESH</span>
+        <a href="tel:+916381642714" class="coord-phone">+91 63816 42714</a>
+      </div>
+      <div class="coord-cell">
+        <span class="coord-role">STUDENT COORDINATOR</span>
+        <span class="coord-name">YASHWANT GOKUL</span>
+        <a href="tel:+918248059760" class="coord-phone">+91 82480 59760</a>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <span>180 DEGREES CONSULTING · VIT CHENNAI</span>
+      <span>KEYS: <kbd>SPACE</kbd> START/PAUSE · <kbd>H</kbd> PROJECTOR · <kbd>T</kbd> THEME · <kbd>F</kbd> FULLSCREEN</span>
+    </div>
+  </footer>
+
+  <div id="drawer-scrim" class="drawer-scrim hidden"></div>
+  <aside id="config-drawer" class="config-drawer" aria-hidden="true">
+    <div class="drawer-head">
+      <h3>CLOCK CONFIGURATION</h3>
+      <button type="button" id="close-drawer-btn" class="tool-btn" aria-label="Close Settings">&times;</button>
+    </div>
+
+    <div class="drawer-content">
+      <div class="config-group">
+        <label for="target-input">Countdown Target (Local Time)</label>
+        <input type="datetime-local" id="target-input" />
+        <button type="button" id="save-target-btn" class="btn btn-ink full">SET TARGET DATE</button>
+        <button type="button" id="reset-default-date-btn" class="btn btn-outline full">RESTORE DEC 8, 2026 09:00</button>
+      </div>
+
+      <div class="drawer-rule"></div>
+
+      <div class="config-group">
+        <label>Custom Stage Timer (HH : MM : SS)</label>
+        <div class="hms-grid">
+          <input type="number" id="in-hours" min="0" max="99" value="0" />
+          <input type="number" id="in-mins" min="0" max="59" value="30" />
+          <input type="number" id="in-secs" min="0" max="59" value="0" />
+        </div>
+        <button type="button" id="load-stage-btn" class="btn btn-emerald full">LOAD STAGE TIMER</button>
+      </div>
+
+      <div class="drawer-rule"></div>
+
+      <div class="config-group">
+        <label class="switch-row">
+          <span>Zero-Hour Doomsday Horn</span>
+          <input type="checkbox" id="alarm-toggle" checked />
+        </label>
+        <label class="switch-row">
+          <span>Mechanical Flap Click</span>
+          <input type="checkbox" id="tick-toggle" />
+        </label>
+        <button type="button" id="test-alarm-btn" class="btn btn-outline full">TEST ALARM</button>
+      </div>
+    </div>
+  </aside>
+
+  <button type="button" id="exit-projector-btn" class="exit-projector-btn">EXIT PROJECTOR (H)</button>
+
+  <script src="audio.js"></script>
+  <script src="scene.js"></script>
+  <script src="flipclock.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

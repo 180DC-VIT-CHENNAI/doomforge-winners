@@ -1,0 +1,12 @@
+﻿name = "doomforgetimer"
+main = "src/index.js"
+compatibility_date = "2026-11-01"
+
+[assets]
+directory = "./public"
+binding = "ASSETS"
+html_handling = "drop-trailing-slash"
+
+[[kv_namespaces]]
+binding = "WINNERS_KV"
+id = "585bc27b58a94964b6b9ea7a03fd007f"

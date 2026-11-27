@@ -1,0 +1,339 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOOMFORGE — Winner Control Panel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    :root {
+      --df-bg: #e6e4dd;
+      --df-surface: #eceae3;
+      --df-ink: #111111;
+      --df-ink-muted: #52524d;
+      --df-green: #187942;
+      --df-green-soft: rgba(24, 121, 66, 0.12);
+      --df-border: rgba(17, 17, 17, 0.2);
+      --df-display: "Anton", Impact, sans-serif;
+      --df-mono: "JetBrains Mono", ui-monospace, monospace;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--df-bg) !important;
+      color: var(--df-ink) !important;
+      font-family: var(--df-mono);
+    }
+
+    .admin-shell {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 4rem;
+    }
+
+    .admin-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid var(--df-border);
+      margin-bottom: 1.75rem;
+    }
+
+    .admin-title {
+      font-family: var(--df-display);
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      letter-spacing: 0.04em;
+      margin: 0;
+      line-height: 1;
+    }
+
+    .admin-title span {
+      color: var(--df-green);
+    }
+
+    .live-badge {
+      padding: 0.45rem 0.9rem;
+      border: 1px solid var(--df-green);
+      background: var(--df-green-soft);
+      color: var(--df-green);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .tactical-panel {
+      position: relative;
+      background: var(--df-surface);
+      border: 1px solid var(--df-border);
+      padding: 1.35rem 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .tactical-panel::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background: var(--df-green);
+    }
+
+    .panel-heading {
+      margin: 0 0 1rem;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--df-green);
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.9rem;
+    }
+
+    @media (max-width: 720px) {
+      .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--df-ink-muted);
+    }
+
+    input {
+      width: 100%;
+      padding: 0.68rem 0.8rem;
+      border: 1px solid var(--df-border);
+      background: #f6f5f0;
+      color: var(--df-ink);
+      font-family: var(--df-mono);
+      font-size: 0.88rem;
+      font-weight: 600;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: var(--df-green);
+      background: #ffffff;
+    }
+
+    .action-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.9rem;
+      margin-top: 1.5rem;
+    }
+
+    button {
+      padding: 0.85rem 1.6rem;
+      border: 1px solid #111111;
+      background: #111111;
+      color: #f4f3ef;
+      font-family: var(--df-mono);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: var(--df-green);
+      border-color: var(--df-green);
+      color: #ffffff;
+    }
+
+    button.secondary {
+      background: transparent;
+      color: var(--df-ink);
+    }
+
+    button.secondary:hover {
+      border-color: var(--df-green);
+      color: var(--df-green);
+      background: transparent;
+    }
+
+    .view-link {
+      margin-left: auto;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--df-green);
+      text-decoration: none;
+    }
+
+    #status-msg {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-left: 3px solid var(--df-green);
+      background: var(--df-surface);
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <main class="admin-shell">
+    <header class="admin-header">
+      <div>
+        <h1 class="admin-title">DOOM<span>/</span>FORGE &mdash; WINNER ADMIN</h1>
+      </div>
+      <span id="state-pill" class="live-badge">CHECKING STATUS...</span>
+    </header>
+
+    <form id="winner-form">
+      <div class="tactical-panel">
+        <h2 class="panel-heading">00 // ADMIN AUTHENTICATION</h2>
+        <label>
+          Admin Password
+          <input type="password" id="password" placeholder="Enter admin password" required />
+        </label>
+      </div>
+
+      <div class="tactical-panel">
+        <h2 class="panel-heading">01 // 1ST PLACE (GRAND CHAMPION)</h2>
+        <div class="grid-3">
+          <label>Winner / Team Name <input type="text" id="name-1" required /></label>
+          <label>College Name <input type="text" id="college-1" required /></label>
+          <label>Prize Money <input type="text" id="prize-1" placeholder="e.g. ₹1,00,000" required /></label>
+        </div>
+      </div>
+
+      <div class="tactical-panel">
+        <h2 class="panel-heading">02 // 2ND PLACE (FIRST RUNNER-UP)</h2>
+        <div class="grid-3">
+          <label>Winner / Team Name <input type="text" id="name-2" required /></label>
+          <label>College Name <input type="text" id="college-2" required /></label>
+          <label>Prize Money <input type="text" id="prize-2" placeholder="e.g. ₹50,000" required /></label>
+        </div>
+      </div>
+
+      <div class="tactical-panel">
+        <h2 class="panel-heading">03 // 3RD PLACE (SECOND RUNNER-UP)</h2>
+        <div class="grid-3">
+          <label>Winner / Team Name <input type="text" id="name-3" required /></label>
+          <label>College Name <input type="text" id="college-3" required /></label>
+          <label>Prize Money <input type="text" id="prize-3" placeholder="e.g. ₹25,000" required /></label>
+        </div>
+      </div>
+
+      <div class="action-bar">
+        <button type="submit">PUSH WINNERS LIVE</button>
+        <button type="button" id="reset-btn" class="secondary">RESET /WINNERS TO TBA</button>
+        <a href="/winners" target="_blank" class="view-link">OPEN /WINNERS &rarr;</a>
+      </div>
+
+      <div id="status-msg" class="hidden"></div>
+    </form>
+  </main>
+
+  <script>
+    const form = document.getElementById("winner-form");
+    const resetBtn = document.getElementById("reset-btn");
+    const statusEl = document.getElementById("status-msg");
+    const statePill = document.getElementById("state-pill");
+
+    function showStatus(msg) {
+      statusEl.textContent = msg;
+      statusEl.classList.remove("hidden");
+    }
+
+    async function preload() {
+      const res = await fetch("/api/winners", { cache: "no-store" });
+      if (!res.ok) return;
+      const data = await res.json();
+      statePill.textContent = data.published ? "• LIVE: WINNERS PUBLISHED" : "• STANDBY: TO BE ANNOUNCED";
+      if (data.published && Array.isArray(data.winners)) {
+        data.winners.forEach((w) => {
+          const r = w.rank;
+          if (document.getElementById(`name-${r}`)) {
+            document.getElementById(`name-${r}`).value = w.name || "";
+            document.getElementById(`college-${r}`).value = w.college || "";
+            document.getElementById(`prize-${r}`).value = w.prize || "";
+          }
+        });
+      }
+    }
+    preload();
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      showStatus("TRANSMITTING WINNERS TO /WINNERS...");
+
+      const password = document.getElementById("password").value;
+      const winners = [1, 2, 3].map((rank) => ({
+        rank,
+        name: document.getElementById(`name-${rank}`).value,
+        college: document.getElementById(`college-${rank}`).value,
+        prize: document.getElementById(`prize-${rank}`).value,
+      }));
+
+      const res = await fetch("/api/winners", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${password}`,
+        },
+        body: JSON.stringify({ winners }),
+      });
+
+      const result = await res.json();
+      if (res.ok) {
+        statePill.textContent = "• LIVE: WINNERS PUBLISHED";
+        showStatus("CONFIRMED // /WINNERS IS NOW LIVE WITH THE TOP 3 PODIUM.");
+      } else {
+        showStatus(`ERROR // ${result.error || "FAILED TO PUSH"}`);
+      }
+    });
+
+    resetBtn.addEventListener("click", async () => {
+      const password = document.getElementById("password").value;
+      if (!password) {
+        showStatus("ERROR // ENTER ADMIN PASSWORD FIRST.");
+        return;
+      }
+
+      const res = await fetch("/api/winners", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${password}`,
+        },
+        body: JSON.stringify({ action: "reset" }),
+      });
+
+      const result = await res.json();
+      if (res.ok) {
+        statePill.textContent = "• STANDBY: TO BE ANNOUNCED";
+        showStatus("RESET COMPLETE // /WINNERS REVERTED TO TO BE ANNOUNCED.");
+      } else {
+        showStatus(`ERROR // ${result.error || "FAILED TO RESET"}`);
+      }
+    });
+  </script>
+</body>
+</html>

@@ -7,6 +7,6 @@ directory = "./public"
 binding = "ASSETS"
 html_handling = "drop-trailing-slash"
 
-[[kv_namespaces]]
+[[WINNERS_KV]]
 binding = "WINNERS_KV"
-id = "585bc27b58a94964b6b9ea7a03fd007f"
+id = "6ca240f25c634e8fa7744d4fceaf3c22"

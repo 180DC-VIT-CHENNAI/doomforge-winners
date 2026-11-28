@@ -4,13 +4,13 @@ export default {
   async fetch(request, env) {
     const url = new URL(request.url);
 
-    // Fetch current winners (defaults to unpublished / To Be Announced)
+    // Fetch current state (defaults to unpublished / To Be Announced)
     if (url.pathname === "/api/winners" && request.method === "GET") {
       const stored = await env.WINNERS_KV.get(KV_KEY, { type: "json" });
-      return Response.json(stored || { published: false, winners: [] });
+      return Response.json(stored || { published: false, teams: [], winners: [] });
     }
 
-    // Push top 3 winners or reset back to TBA
+    // Push participating teams + top 3 winners, or reset back to TBA
     if (url.pathname === "/api/winners" && request.method === "POST") {
       const authHeader = request.headers.get("Authorization") || "";
       const token = authHeader.replace(/^Bearer\s+/i, "").trim();
@@ -22,7 +22,7 @@ export default {
       const body = await request.json();
 
       if (body.action === "reset") {
-        const emptyState = { published: false, winners: [] };
+        const emptyState = { published: false, teams: [], winners: [] };
         await env.WINNERS_KV.put(KV_KEY, JSON.stringify(emptyState));
         return Response.json({ ok: true, state: emptyState });
       }
@@ -31,9 +31,14 @@ export default {
         return Response.json({ error: "All 3 winners are required" }, { status: 400 });
       }
 
+      const cleanTeams = Array.isArray(body.teams)
+        ? body.teams.map((t) => String(t || "").trim()).filter(Boolean)
+        : [];
+
       const payload = {
         published: true,
         updatedAt: new Date().toISOString(),
+        teams: cleanTeams,
         winners: body.winners.map((w, index) => ({
           rank: index + 1,
           name: String(w.name || "").trim(),

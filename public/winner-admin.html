@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DOOMFORGE — Winner Control Panel</title>
+  <title>DOOMFORGE — Unified Stage & Winner Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet" />
@@ -32,7 +32,7 @@
     }
 
     .admin-shell {
-      max-width: 860px;
+      max-width: 900px;
       margin: 0 auto;
       padding: 2rem 1.25rem 4rem;
     }
@@ -56,9 +56,7 @@
       line-height: 1;
     }
 
-    .admin-title span {
-      color: var(--df-green);
-    }
+    .admin-title span { color: var(--df-green); }
 
     .live-badge {
       padding: 0.45rem 0.9rem;
@@ -89,13 +87,31 @@
       background: var(--df-green);
     }
 
+    .panel-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
+      flex-wrap: wrap;
+    }
+
     .panel-heading {
-      margin: 0 0 1rem;
+      margin: 0;
       font-size: 0.82rem;
       font-weight: 800;
       letter-spacing: 0.16em;
       text-transform: uppercase;
       color: var(--df-green);
+    }
+
+    .count-pill {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 0.25rem 0.65rem;
+      border: 1px solid var(--df-border);
+      background: #f6f5f0;
+      letter-spacing: 0.1em;
     }
 
     .grid-3 {
@@ -119,21 +135,46 @@
       color: var(--df-ink-muted);
     }
 
-    input {
+    input, textarea {
       width: 100%;
       padding: 0.68rem 0.8rem;
       border: 1px solid var(--df-border);
       background: #f6f5f0;
       color: var(--df-ink);
       font-family: var(--df-mono);
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       font-weight: 600;
       outline: none;
     }
 
-    input:focus {
+    textarea {
+      min-height: 150px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    input:focus, textarea:focus {
       border-color: var(--df-green);
       background: #ffffff;
+    }
+
+    .helper-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
+      font-size: 0.7rem;
+      color: var(--df-ink-muted);
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .mini-btn {
+      padding: 0.35rem 0.7rem;
+      font-size: 0.68rem;
+      background: transparent;
+      color: var(--df-ink);
+      border: 1px solid var(--df-border);
     }
 
     .action-bar {
@@ -200,14 +241,16 @@
   <main class="admin-shell">
     <header class="admin-header">
       <div>
-        <h1 class="admin-title">DOOM<span>/</span>FORGE &mdash; WINNER ADMIN</h1>
+        <h1 class="admin-title">DOOM<span>/</span>FORGE &mdash; STAGE CONTROL</h1>
       </div>
       <span id="state-pill" class="live-badge">CHECKING STATUS...</span>
     </header>
 
     <form id="winner-form">
       <div class="tactical-panel">
-        <h2 class="panel-heading">00 // ADMIN AUTHENTICATION</h2>
+        <div class="panel-header-row">
+          <h2 class="panel-heading">00 // ADMIN AUTHENTICATION</h2>
+        </div>
         <label>
           Admin Password
           <input type="password" id="password" placeholder="Enter admin password" required />
@@ -215,7 +258,24 @@
       </div>
 
       <div class="tactical-panel">
-        <h2 class="panel-heading">01 // 1ST PLACE (GRAND CHAMPION)</h2>
+        <div class="panel-header-row">
+          <h2 class="panel-heading">01 // PARTICIPATING TEAMS ROSTER (VORTEX &amp; ROULETTE)</h2>
+          <span id="team-count-pill" class="count-pill">0 TEAMS LOADED</span>
+        </div>
+        <label>
+          Paste All Participating Team Names (One Team Per Line)
+          <textarea id="teams-input" placeholder="Team Nexus&#10;Latveria Dynamics&#10;Stark Protocol&#10;Binary Syndicate&#10;Quantum Forge&#10;Cyber Vipers" required></textarea>
+        </label>
+        <div class="helper-row">
+          <span>These teams orbit in the Vortex and cycle on the podium cards until 1, 2, or 3 is pressed.</span>
+          <button type="button" id="sample-teams-btn" class="mini-btn">+ Fill Sample Teams</button>
+        </div>
+      </div>
+
+      <div class="tactical-panel">
+        <div class="panel-header-row">
+          <h2 class="panel-heading">02 // 1ST PLACE (GRAND CHAMPION)</h2>
+        </div>
         <div class="grid-3">
           <label>Winner / Team Name <input type="text" id="name-1" required /></label>
           <label>College Name <input type="text" id="college-1" required /></label>
@@ -224,7 +284,9 @@
       </div>
 
       <div class="tactical-panel">
-        <h2 class="panel-heading">02 // 2ND PLACE (FIRST RUNNER-UP)</h2>
+        <div class="panel-header-row">
+          <h2 class="panel-heading">03 // 2ND PLACE (FIRST RUNNER-UP)</h2>
+        </div>
         <div class="grid-3">
           <label>Winner / Team Name <input type="text" id="name-2" required /></label>
           <label>College Name <input type="text" id="college-2" required /></label>
@@ -233,7 +295,9 @@
       </div>
 
       <div class="tactical-panel">
-        <h2 class="panel-heading">03 // 3RD PLACE (SECOND RUNNER-UP)</h2>
+        <div class="panel-header-row">
+          <h2 class="panel-heading">04 // 3RD PLACE (SECOND RUNNER-UP)</h2>
+        </div>
         <div class="grid-3">
           <label>Winner / Team Name <input type="text" id="name-3" required /></label>
           <label>College Name <input type="text" id="college-3" required /></label>
@@ -242,7 +306,7 @@
       </div>
 
       <div class="action-bar">
-        <button type="submit">PUSH WINNERS LIVE</button>
+        <button type="submit">PUSH TO STAGE (LAUNCH VORTEX)</button>
         <button type="button" id="reset-btn" class="secondary">RESET /WINNERS TO TBA</button>
         <a href="/winners" target="_blank" class="view-link">OPEN /WINNERS &rarr;</a>
       </div>
@@ -256,6 +320,33 @@
     const resetBtn = document.getElementById("reset-btn");
     const statusEl = document.getElementById("status-msg");
     const statePill = document.getElementById("state-pill");
+    const teamsInput = document.getElementById("teams-input");
+    const teamCountPill = document.getElementById("team-count-pill");
+    const sampleTeamsBtn = document.getElementById("sample-teams-btn");
+
+    function parseTeams() {
+      return teamsInput.value
+        .split(/\r?\n/)
+        .map((line) => line.trim())
+        .filter(Boolean);
+    }
+
+    function updateTeamCount() {
+      const count = parseTeams().length;
+      teamCountPill.textContent = `${count} TEAM${count === 1 ? "" : "S"} LOADED`;
+    }
+
+    teamsInput.addEventListener("input", updateTeamCount);
+
+    sampleTeamsBtn.addEventListener("click", () => {
+      const samples = [
+        "Team Nexus", "Latveria Core", "Arc Reactors", "Stark Protocol",
+        "Doomsday Builders", "Byte Knights", "Neural Forge", "ZeroDay VIT",
+        "Apex Coders", "Ironclad AI", "Chrono Devs", "Titan Stack"
+      ];
+      teamsInput.value = samples.join("\n");
+      updateTeamCount();
+    });
 
     function showStatus(msg) {
       statusEl.textContent = msg;
@@ -266,7 +357,15 @@
       const res = await fetch("/api/winners", { cache: "no-store" });
       if (!res.ok) return;
       const data = await res.json();
-      statePill.textContent = data.published ? "• LIVE: WINNERS PUBLISHED" : "• STANDBY: TO BE ANNOUNCED";
+      statePill.textContent = data.published
+        ? `• STAGE ARMED (${(data.teams || []).length} TEAMS)`
+        : "• STANDBY: TO BE ANNOUNCED";
+
+      if (Array.isArray(data.teams) && data.teams.length > 0) {
+        teamsInput.value = data.teams.join("\n");
+        updateTeamCount();
+      }
+
       if (data.published && Array.isArray(data.winners)) {
         data.winners.forEach((w) => {
           const r = w.rank;
@@ -282,7 +381,13 @@
 
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
-      showStatus("TRANSMITTING WINNERS TO /WINNERS...");
+      const teams = parseTeams();
+      if (teams.length === 0) {
+        showStatus("ERROR // ENTER AT LEAST ONE PARTICIPATING TEAM.");
+        return;
+      }
+
+      showStatus("TRANSMITTING ROSTER & WINNERS TO STAGE...");
 
       const password = document.getElementById("password").value;
       const winners = [1, 2, 3].map((rank) => ({
@@ -298,13 +403,13 @@
           "Content-Type": "application/json",
           Authorization: `Bearer ${password}`,
         },
-        body: JSON.stringify({ winners }),
+        body: JSON.stringify({ teams, winners }),
       });
 
       const result = await res.json();
       if (res.ok) {
-        statePill.textContent = "• LIVE: WINNERS PUBLISHED";
-        showStatus("CONFIRMED // /WINNERS IS NOW LIVE WITH THE TOP 3 PODIUM.");
+        statePill.textContent = `• STAGE ARMED (${teams.length} TEAMS)`;
+        showStatus("CONFIRMED // /WINNERS IS NOW RUNNING THE VORTEX. PRESS SHIFT+R ON STAGE FOR PODIUM ROULETTE, THEN 1, 2, 3.");
       } else {
         showStatus(`ERROR // ${result.error || "FAILED TO PUSH"}`);
       }

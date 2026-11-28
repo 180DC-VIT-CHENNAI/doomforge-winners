@@ -397,21 +397,28 @@
         prize: document.getElementById(`prize-${rank}`).value,
       }));
 
-      const res = await fetch("/api/winners", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${password}`,
-        },
-        body: JSON.stringify({ teams, winners }),
-      });
+      try {
+        const res = await fetch("/api/winners", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${password}`,
+          },
+          body: JSON.stringify({ teams, winners }),
+        });
 
-      const result = await res.json();
-      if (res.ok) {
-        statePill.textContent = `• STAGE ARMED (${teams.length} TEAMS)`;
-        showStatus("CONFIRMED // /WINNERS IS NOW RUNNING THE VORTEX. PRESS SHIFT+R ON STAGE FOR PODIUM ROULETTE, THEN 1, 2, 3.");
-      } else {
-        showStatus(`ERROR // ${result.error || "FAILED TO PUSH"}`);
+        const rawText = await res.text();
+        let result = {};
+        try { result = JSON.parse(rawText); } catch (_) {}
+
+        if (res.ok) {
+          statePill.textContent = `• STAGE ARMED (${teams.length} TEAMS)`;
+          showStatus("CONFIRMED // /WINNERS IS NOW RUNNING THE VORTEX. PRESS SHIFT+R ON STAGE FOR PODIUM ROULETTE, THEN 1, 2, 3.");
+        } else {
+          showStatus(`ERROR // ${result.error || rawText || `HTTP ${res.status}`}`);
+        }
+      } catch (err) {
+        showStatus("ERROR // CANNOT REACH SERVER. START NPX WRANGLER DEV IN YOUR TERMINAL.");
       }
     });
 
@@ -442,3 +449,4 @@
   </script>
 </body>
 </html>
+

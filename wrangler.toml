@@ -1,12 +1,11 @@
 ﻿name = "doomforge-winners"
 main = "src/index.js"
-compatibility_date = "2026-11-01"
+compatibility_date = "2024-11-01"
 
 [assets]
 directory = "./public"
 binding = "ASSETS"
-html_handling = "drop-trailing-slash"
 
-[[WINNERS_KV]]
+[[kv_namespaces]]
 binding = "WINNERS_KV"
-id = "6ca240f25c634e8fa7744d4fceaf3c22"
+id = "00000000000000000000000000000000"
